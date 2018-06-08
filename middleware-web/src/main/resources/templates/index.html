@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="https://www.huilianyi.com/favicon.ico" type="image/x-icon">
+    <title th:text="#{web.index.title}"></title>
+
+    <link th:href="@{/plugins/layui/css/layui.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/plugins/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css}" rel="stylesheet"
+          type="text/css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo" th:text="#{web.index.Head}"></div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:void(0);">
+                    <img src="https://www.huilianyi.com/favicon.ico" class="layui-nav-img">
+                    <span id="username"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="javascript:void(0);" name="lang" lang="zh_CN" th:text="#{web.common.language.ch}">
+                        </a>
+                    </dd>
+                    <dd>
+                        <a href="javascript:void(0);" name="lang" lang="en_US" th:text="#{web.common.language.en}">
+                        </a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:void(0);" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>&nbsp;&nbsp;<span th:text="#{web.index.logout}"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" id="leftMenu" lay-filter="leftMenu">
+                <li class="layui-nav-item" th:each="userMenu:${userMenuList}">
+                    <a href="javascript:void(0);" th:name="${userMenu.menuUri}">
+                        <i th:class="${userMenu.menuIcon}"></i>
+                        <span th:text="${userMenu.menuKey}"></span>
+                    </a>
+                    <dl class="layui-nav-child" th:each="sonMenu:${userMenu.list}">
+                        <dd>
+                            <a th:name="${sonMenu.menuUri}" href="javascript:void(0);">
+                                <i th:class="${sonMenu.menuIcon}"></i>
+                                <span th:text="${sonMenu.menuKey}"></span>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <div style="padding: 10px 5px 0 5px;">
+            <iframe scrolling="yes" frameborder="0" class="layui-show" id="contentFrame"
+                    style="width: 100%; min-height: 400px; overflow: visible; background: #fff;"
+                    th:src="@{/page/navigation/user}"></iframe>
+        </div>
+    </div>
+
+    <div class="layui-footer" style="text-align: center">
+        ©&nbsp;<span th:text="${year}"></span>&nbsp;<span th:text="${systemName}"></span>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/common/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/common/utils.js}"></script>
+<script type="text/javascript" th:src="@{/common/common.js}"></script>
+<script>
+    layui.use(['element', 'jquery', 'layer'], function () {
+        changeFrameHeight();
+        var element = layui.element
+            , $ = layui.jquery;
+        var loginUser = sessionUser();
+        $("#username")[0].textContent = loginUser.name;
+        element.on('nav(leftMenu)', function (element) {
+            if ("" !== element[0].name && element[0].name.length > 0) {
+                $.find('iframe')[0].src = "/page/navigation/" + element[0].name;
+            }
+        });
+
+        $('body').on('click', '[name=\'lang\']', function (event) {
+            var locale = event.target.attributes.lang.nodeValue;
+            sessionLanguage(locale);
+            parent.location.href = '/page/navigation/index?userId=' + sessionUser().objId + '&locale=' + getSessionLanguage();
+        });
+    });
+
+    window.onresize = function () {
+        changeFrameHeight();
+    };
+
+    function changeFrameHeight() {
+        var ifm = document.getElementById("contentFrame");
+        ifm.height = document.documentElement.clientHeight - 60 - 50;
+    }
+
+    /**
+     * 退出系统
+     */
+    function logout() {
+        $.ajax({
+            type: "POST",
+            url: "/face/user/logout",
+            contentType: "application/json",
+            data: sessionUser().objId,
+            dataType: "json",
+            success: function (result) {
+                if (result.success === true) {
+                    dropSession();
+                    parent.location.href = '/page/navigation/login';
+                } else {
+                    parent.layer.msg(result.message, {icon: 5});
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

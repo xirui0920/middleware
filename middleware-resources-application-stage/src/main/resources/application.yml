@@ -1,0 +1,81 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: middleware
+  http:
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    servlet:
+      content-type: text/html
+    encoding: UTF-8
+    cache: false
+  liquibase:
+    change-log: classpath:/liquibase/master.xml
+    enabled: true
+    drop-first: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  messages:
+    basename: i18n/messages/messages
+    cache-duration: 1800
+    fallback-to-system-locale: true
+    encoding: UTF-8
+  datasource:
+    url: jdbc:mysql://localhost:3306/middleware-local?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      db-type: mysql
+      # 初始化大小，最小，最大
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      # 获取连接等待超时的时间
+      max-wait: 60000
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      validation-query: SELECT 1
+      validation-query-timeout: 60000
+      test-while-idle: true
+      test-on-borrow: true
+      test-on-return: false
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      max-evictable-idle-time-millis: 600000
+  mail:
+    host: smtp.163.com
+    port: 25
+    username: 18551631365@163.com
+    password:
+    properties:
+      auth: true
+      enable: true
+      required: true
+mybatis-plus:
+  mapper-locations: classpath:/com/huilianyi/middleware/dao/*mapper.xml
+  type-aliases-package: com.huilianyi.middleware.po
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+  global-config:
+    id-type: 3
+    field-strategy: 2
+    db-column-underline: true
+    capital-mode: true
+    refresh-mapper: true
+logging:
+  config: classpath:config/logback/logback-stage.xml

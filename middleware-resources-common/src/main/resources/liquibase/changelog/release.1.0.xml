@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!-- 获取各数据库中的UUID -->
+    <property name="uuid" value="UUID()" dbms="mysql"/>
+    <property name="uuid" value="RANDOM_UUID()" dbms="h2"/>
+    <property name="uuid" value="UUID_GENERATE_V1()" dbms="postgresql"/>
+    <property name="uuid" value="SYS_GUID()" dbms="oracle"/>
+    <property name="uuid" value="NEWID()" dbms="mssql"/>
+
+    <!-- 获取各数据库中的当前时间 -->
+    <property name="now" value="NOW()" dbms="mysql"/>
+    <property name="now" value="NOW()" dbms="h2"/>
+    <property name="now" value="CURRENT_TIMESTAMP" dbms="postgresql"/>
+    <property name="now" value="SYSDATE" dbms="oracle"/>
+    <property name="now" value="getdate()" dbms="mssql"/>
+
+    <changeSet id="20180521.createTable" author="GooliangYoung">
+        <createTable tableName="system_task" remarks="系统定时任务表">
+            <column name="obj_id" type="varchar(36)" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="task_name" type="varchar(50)" remarks="任务名称"/>
+            <column name="class_name" type="varchar(50)" remarks="类名"/>
+            <column name="method_name" type="varchar(50)" remarks="方法名"/>
+            <column name="cron_value" type="varchar(20)" remarks="cron表达式"/>
+            <column name="last_time" type="datetime" remarks="上次执行时间"/>
+            <column name="start_time" type="datetime" remarks="开始执行时间"/>
+            <column name="next_time" type="datetime" remarks="下次执行时间"/>
+            <column name="is_enable" type="int" remarks="是否启用"/>
+            <column name="data_status" type="int" remarks="数据状态"/>
+            <column name="remark" type="varchar(200)" remarks="备注"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+        </createTable>
+        <createTable tableName="system_user" remarks="系统用户表">
+            <column name="obj_id" type="varchar(36)" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)" remarks="姓名"/>
+            <column name="username" type="varchar(50)" remarks="用户名"/>
+            <column name="password" type="varchar(200)" remarks="密码"/>
+            <column name="is_enable" type="int" remarks="是否启用"/>
+            <column name="data_status" type="int" remarks="数据状态"/>
+            <column name="remark" type="varchar(200)" remarks="备注"/>
+            <column name="create_by" type="varchar(36)" remarks="创建人"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+        </createTable>
+        <insert tableName="system_user">
+            <column name="obj_id" valueComputed="${uuid}"/>
+            <column name="name" value="管理员"/>
+            <column name="username" value="admin"/>
+            <column name="password" value="c759eaf09e4638954f63ace0ce1b53b40f62ccb7"/>
+            <column name="is_enable" value="1"/>
+            <column name="data_status" value="0"/>
+            <column name="remark" value="系统默认用户"/>
+            <column name="create_by" value=""/>
+            <column name="create_time" valueComputed="${now}"/>
+            <column name="update_time" valueComputed="${now}"/>
+        </insert>
+        <createTable tableName="system_menu" remarks="系统菜单表">
+            <column name="obj_id" type="varchar(36)" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="parent_id" type="varchar(36)" remarks="上级菜单ID"/>
+            <column name="menu_key" type="varchar(50)" remarks="菜单索引"/>
+            <column name="menu_uri" type="varchar(200)" remarks="菜单URI"/>
+            <column name="menu_type" type="int" remarks="菜单类型"/>
+            <column name="menu_icon" type="varchar(50)" remarks="菜单图标"/>
+            <column name="sort" type="int" remarks="菜单排序"/>
+            <column name="is_enable" type="int" remarks="是否启用"/>
+            <column name="remark" type="varchar(200)" remarks="备注"/>
+            <column name="create_by" type="varchar(36)" remarks="创建人"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+        </createTable>
+        <createTable tableName="system_role" remarks="系统角色表">
+            <column name="obj_id" type="varchar(36)" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role_name" type="varchar(50)" remarks="角色名"/>
+            <column name="role_nickname" type="varchar(50)" remarks="角色别名"/>
+            <column name="is_enable" type="int" remarks="是否启用"/>
+            <column name="remark" type="varchar(200)" remarks="备注"/>
+            <column name="create_by" type="varchar(36)" remarks="创建人"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+        </createTable>
+        <createTable tableName="system_user_role" remarks="系统用户角色关联表">
+            <column name="obj_id" type="varchar(36)" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar(36)" remarks="用户ID"/>
+            <column name="role_id" type="varchar(36)" remarks="角色ID"/>
+        </createTable>
+        <createTable tableName="system_role_menu" remarks="系统角色菜单关联表">
+            <column name="obj_id" type="varchar(36)" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role_id" type="varchar(36)" remarks="角色ID"/>
+            <column name="menu_id" type="varchar(36)" remarks="菜单ID"/>
+        </createTable>
+        <createTable tableName="system_log" remarks="系统日志表">
+            <column name="obj_id" type="varchar(36)" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar(36)" remarks="用户ID"/>
+            <column name="operation" type="varchar(100)" remarks="操作"/>
+            <column name="operation_type" type="int" remarks="操作类型"/>
+            <column name="method" type="varchar(100)" remarks="执行方法"/>
+            <column name="params" type="text" remarks="参数"/>
+            <column name="ip" type="varchar(64)" remarks="IP"/>
+            <column name="remark" type="varchar(200)" remarks="备注"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

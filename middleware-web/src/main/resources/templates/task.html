@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="https://www.huilianyi.com/favicon.ico" type="image/x-icon">
+    <title th:text="#{web.task.title}"></title>
+
+    <link th:href="@{/plugins/layui/css/layui.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/plugins/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css}" rel="stylesheet"
+          type="text/css">
+</head>
+<body>
+<form class="layui-form layui-form-pane">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label" th:text="#{web.task.label.taskName}"></label>
+            <div class="layui-input-inline">
+                <input type="text" name="taskName" id="taskName" th:placeholder="#{web.task.label.taskName}"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn search-btn" data-type="reload" type="button">
+                <i class="fas fa-search"></i>&nbsp;
+                <span th:text="#{web.common.operate.search}"></span>
+            </button>
+            <button class="layui-btn" type="reset">
+                <i class="fas fa-redo-alt"></i>&nbsp;
+                <span th:text="#{web.common.operate.reset}"></span>
+            </button>
+        </div>
+    </div>
+</form>
+<div class="layui-btn-group">
+    <button class="layui-btn layui-btn-sm" id="addButton">
+        <i class="fas fa-plus-square"></i>&nbsp;
+        <span th:text="#{web.common.operate.add}"></span>
+    </button>
+    <button class="layui-btn layui-btn-sm layui-btn-danger" id="deleteButton">
+        <i class="fas fa-minus-square"></i>&nbsp;
+        <span th:text="#{web.common.operate.delete}"></span>
+    </button>
+</div>
+<div class="layui-form">
+    <table class="layui-table" id="taskTable" lay-filter="taskTable" lay-data="{
+            elem: '#taskTable',
+            url: '/face/task/select',
+            page: {
+                limits: [10, 20, 30, 50]
+            },
+            response: {
+                statusName: 'code'
+                , statusCode: 10000
+                , msgName: 'message'
+                , countName: 'total'
+                , dataName: 'list'
+            },
+            initSort: {
+                field: 'startTime'
+                , type: 'asc'
+            },
+            id: 'taskRecords'
+        }">
+        <thead>
+        <tr>
+            <th lay-data="{type:'checkbox', width:50, fixed:'left'}"></th>
+            <th lay-data="{type:'numbers', width:50, fixed:'left'}" th:text="#{web.common.column.number}"></th>
+            <th lay-data="{field:'taskName', width:100, fixed:'left'}"
+                th:text="#{web.task.label.taskName}"></th>
+            <th lay-data="{field:'className', width:100, fixed:'left'}" th:text="#{web.task.label.className}"></th>
+            <th lay-data="{field:'methodName', width:100, fixed:'left'}" th:text="#{web.task.label.methodName}"></th>
+            <th lay-data="{field:'cronValue', width:130, fixed:'left'}" th:text="#{web.task.label.cronValue}"></th>
+            <th lay-data="{field:'lastTime', width:165}" th:text="#{web.task.label.lastTime}"></th>
+            <th lay-data="{field:'startTime', width:165}" th:text="#{web.task.label.startTime}"></th>
+            <th lay-data="{field:'nextTime', width:165}" th:text="#{web.task.label.nextTime}"></th>
+            <th lay-data="{field:'isEnable', width:80, templet:'#isEnableRender'}"
+                th:text="#{web.common.column.isEnable}"></th>
+            <th lay-data="{field:'createTime', width:165, sort: true}" th:text="#{web.common.column.createTime}"></th>
+            <th lay-data="{field:'updateTime', width:165, sort: true}" th:text="#{web.common.column.updateTime}"></th>
+            <th lay-data="{field:'remark', width:200}" th:text="#{web.common.column.remark}"></th>
+            <th lay-data="{width:170, align:'center', fixed:'right', toolbar:'#operateBar'}"
+                th:text="#{web.common.column.operateBar}"></th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript" th:src="@{/common/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/common/utils.js}"></script>
+<script type="text/javascript" th:src="@{/common/common.js}"></script>
+<script>
+    layui.use(['element', 'form', 'table', 'jquery'], function () {
+        var table = layui.table,
+            $ = layui.jquery;
+        var active = {
+            reload: function () {
+                var taskName = $("#taskName");
+
+                table.reload('taskRecords', {
+                    where: {
+                        taskName: taskName.val()
+                    }
+                });
+            }
+        };
+
+        $(".search-btn").on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        table.on('tool(taskTable)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent === 'detail') {
+                detail("/page/navigation/task/view", data.objId, 480, 535);
+            } else if (layEvent === 'delete') {
+                deleteOne("/face/task/delete", data.objId);
+            } else if (layEvent === 'edit') {
+                edit("/page/navigation/task/edit", data.objId, 480, 535);
+            }
+        });
+
+        $(document).on('click', '#addButton', function () {
+            add("/page/navigation/task/edit", 480, 535);
+        });
+
+        $(document).on('click', '#deleteButton', function () {
+            var checkedData = table.checkStatus('taskRecords').data;
+            if (0 === checkedData.length) {
+                var selectOneMore = getI18nResource('web.common.operate.select.oneMore');
+                parent.layer.msg(selectOneMore, {icon: 5});
+                return;
+            }
+            var ids = [];
+            for (var i = 0; i < checkedData.length; i++) {
+                ids.push(checkedData[i].objId);
+            }
+            deleteBatch('/face/task/deleteBatch', ids);
+        });
+    });
+</script>
+<script type="text/html" id="operateBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" th:title="#{web.common.operate.view}">
+        <i class="far fa-eye"></i>
+    </a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit" th:title="#{web.common.operate.edit}">
+        <i class="far fa-edit"></i>
+    </a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete" th:title="#{web.common.operate.delete}">
+        <i class="far fa-trash-alt"></i>
+    </a>
+    <a class="layui-btn layui-btn-xs" lay-event="execute" th:title="#{web.task.operate.execute}">
+        <i class="fas fa-play"></i>
+    </a>
+</script>
+<script type="text/html" id="isEnableRender">
+    {{#  if(d.isEnable === 1){ }}
+    <span style="color:green;" th:text="#{web.common.column.isEnable.enable}"></span>
+    {{#  } else { }}
+    <span style="color:red;" th:text="#{web.common.column.isEnable.unable}"></span>
+    {{#  } }}
+</script>
+</body>
+</html>

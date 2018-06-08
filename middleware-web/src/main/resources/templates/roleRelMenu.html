@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="https://www.huilianyi.com/favicon.ico" type="image/x-icon">
+    <title th:text="#{web.role.rel.menu.title}"></title>
+
+    <link th:href="@{/plugins/layui/css/layui.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/plugins/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css}" rel="stylesheet"
+          type="text/css">
+    <link th:href="@{/plugins/zTree/css/metroStyle/metroStyle.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="layui-col-md12">
+    <div class="layui-card" style="text-align: center;">
+        <input type="hidden" name="roleId" id="roleId" th:value="${roleInfo.objId}">
+        <div class="layui-card-header" th:text="${roleInfo.roleName}"></div>
+        <div class="layui-card-body">
+            <div class="site-editor layui-bg-gray" style="overflow: auto;height: 340px;">
+                <ul id="menuTree" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <div class="btn-list">
+            <div class="btnlist" style="text-align: right; margin-right: 15px;">
+                <button class="layui-btn" id="roleRelMenuButton">
+                    <i class="fas fa-save"></i>&nbsp;
+                    <span th:text="#{web.common.operate.submit}"></span>
+                </button>
+                <button class="layui-btn" onclick="$t.closeWindow();">
+                    <i class="fas fa-undo-alt"></i>&nbsp;
+                    <span th:text="#{web.common.operate.cancel}"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/common/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/common/utils.js}"></script>
+<script type="text/javascript" th:src="@{/common/common.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/zTree/js/jquery.ztree.core.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/zTree/js/jquery.ztree.excheck.min.js}"></script>
+<script>
+    layui.use(['layer'], function () {
+        var layer = layui.layer;
+
+        var setting = {
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid",
+                    rootPId: "0"
+                },
+                key: {
+                    name: "nameWithIcon",
+                    title: "name"
+                }
+            },
+            view: {
+                nameIsHTML: true,
+                showIcon: false
+            }
+        };
+        var zNodes;
+
+        window.onload = function () {
+            $.ajax({
+                type: 'POST',
+                url: '/face/menu/getRoleMenu',
+                contentType: "application/json",
+                data: $("#roleId").val(),
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (true === data.success) {
+                        zNodes = data.list;
+                        initVideoTree();
+                    }
+                }
+            });
+
+            /**
+             * 初始化菜单树
+             */
+            function initVideoTree() {
+                $.fn.zTree.init($("#menuTree"), setting, zNodes);
+            }
+        };
+
+        $(document).on('click', '#roleRelMenuButton', function () {
+            var menuTreeNodes = $.fn.zTree.getZTreeObj("menuTree");
+            var checkedMenus = menuTreeNodes.getCheckedNodes(true);
+            var menuIds = [];
+            for (var i = 0; i < checkedMenus.length; i++) {
+                menuIds.push(checkedMenus[i].id);
+            }
+            var roleRelMenu = Object();
+            roleRelMenu.roleId = $("#roleId").val();
+            roleRelMenu.menuIds = menuIds;
+            $.ajax({
+                type: 'POST',
+                url: '/face/menu/roleRelMenu',
+                contentType: "application/json",
+                data: JSON.stringify(roleRelMenu),
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (true === data.success) {
+                        $t.closeWindow();
+                    } else {
+                        parent.layer.msg(data.message);
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

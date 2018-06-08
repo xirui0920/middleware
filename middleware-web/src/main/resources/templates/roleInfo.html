@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="https://www.huilianyi.com/favicon.ico" type="image/x-icon">
+    <title th:text="#{web.user.title}"></title>
+
+    <link th:href="@{/plugins/layui/css/layui.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/plugins/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css}" rel="stylesheet"
+          type="text/css">
+</head>
+<body style="padding: 15px;">
+<form class="layui-form" action="">
+    <input type="hidden" name="objId" th:value="${roleInfo.objId}">
+    <input type="hidden" id="createBy" name="createBy">
+    <div class="layui-form-item">
+        <label class="layui-form-label lable-width" style="width: 100px;">
+            <span th:text="#{web.role.label.roleName}"></span>
+            <span class="layui-badge-dot"></span></label>
+        <div class="layui-input-inline">
+            <input type="text" name="roleName" required lay-verify="required" autocomplete="off"
+                   th:placeholder="#{web.role.label.roleName}" class="layui-input" th:value="${roleInfo.roleName}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lable-width" th:text="#{web.role.label.roleNickname}"
+               style="width: 100px;"></label>
+        <div class="layui-input-inline">
+            <input type="text" name="roleNickname" autocomplete="off" class="layui-input"
+                   th:placeholder="#{web.role.label.roleNickname}" th:value="${roleInfo.roleNickname}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lable-width" th:text="#{web.common.column.isEnable}"
+               style="width: 100px;"></label>
+        <div class="layui-input-inline">
+            <select name="isEnable">
+                <option value="1" th:selected="${roleInfo.isEnable==1}"
+                        th:text="#{web.common.column.isEnable.enable}"></option>
+                <option value="0" th:selected="${roleInfo.isEnable==0}"
+                        th:text="#{web.common.column.isEnable.unable}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label lable-width" th:text="#{web.common.column.remark}" style="width: 100px;"></label>
+        <div class="layui-input-block textarea-left" style="margin-left: 130px;">
+                <textarea th:placeholder="#{web.common.column.remark}" class="layui-textarea" name="remark"
+                          th:text="${roleInfo.remark}"></textarea>
+        </div>
+    </div>
+    <div class="page-footer">
+        <div class="btn-list">
+            <div class="btnlist" style="text-align: right;">
+                <button class="layui-btn" lay-submit lay-filter="submit" data-url="/face/role/add"
+                        th:style="'display:'+${pageProperty=='edit'?'inline-block':'none'}+''">
+                    <i class="fas fa-save"></i>&nbsp;
+                    <span th:text="#{web.common.operate.submit}"></span>
+                </button>
+                <button class="layui-btn" type="reset"
+                        th:style="'display:'+${pageProperty=='edit'?'inline-block':'none'}+''">
+                    <i class="fas fa-redo-alt"></i>&nbsp;
+                    <span th:text="#{web.common.operate.reset}"></span>
+                </button>
+                <button class="layui-btn" onclick="$t.closeWindow();">
+                    <i class="fas fa-undo-alt"></i>&nbsp;
+                    <span th:text="#{web.common.operate.cancel}"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" th:src="@{/common/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/common/utils.js}"></script>
+<script type="text/javascript" th:src="@{/common/common.js}"></script>
+<script>
+    layui.use([], function () {
+        var loginUser = sessionUser();
+        $("#createBy").val(loginUser.objId);
+    });
+</script>
+</body>
+</html>

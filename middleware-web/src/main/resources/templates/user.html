@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="https://www.huilianyi.com/favicon.ico" type="image/x-icon">
+    <title th:text="#{web.user.title}"></title>
+
+    <link th:href="@{/plugins/layui/css/layui.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/plugins/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css}" rel="stylesheet"
+          type="text/css">
+</head>
+<body>
+<form class="layui-form layui-form-pane">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label" th:text="#{web.user.label.name}"></label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" id="name" th:placeholder="#{web.user.label.name}"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label" th:text="#{web.user.label.username}"></label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" id="username" th:placeholder="#{web.user.label.username}"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn search-btn" data-type="reload" type="button">
+                <i class="fas fa-search"></i>&nbsp;
+                <span th:text="#{web.common.operate.search}"></span>
+            </button>
+            <button class="layui-btn" type="reset">
+                <i class="fas fa-redo-alt"></i>&nbsp;
+                <span th:text="#{web.common.operate.reset}"></span>
+            </button>
+        </div>
+    </div>
+</form>
+<div class="layui-btn-group">
+    <button class="layui-btn layui-btn-sm" id="addButton">
+        <i class="fas fa-plus-square"></i>&nbsp;
+        <span th:text="#{web.common.operate.add}"></span>
+    </button>
+    <button class="layui-btn layui-btn-sm layui-btn-danger" id="deleteButton">
+        <i class="fas fa-minus-square"></i>&nbsp;
+        <span th:text="#{web.common.operate.delete}"></span>
+    </button>
+    <button class="layui-btn layui-btn-sm layui-btn-warm" id="roleButton">
+        <i class="fas fa-user-secret"></i>&nbsp;
+        <span th:text="#{web.common.operate.role}"></span>
+    </button>
+</div>
+<div class="layui-form">
+    <table class="layui-table" id="userTable" lay-filter="userTable" lay-data="{
+            elem: '#userTable',
+            url: '/face/user/select',
+            page: {
+                limits: [10, 20, 30, 50]
+            },
+            response: {
+                statusName: 'code'
+                , statusCode: 10000
+                , msgName: 'message'
+                , countName: 'total'
+                , dataName: 'list'
+            },
+            initSort: {
+                field: 'username'
+                , type: 'asc'
+            },
+            id: 'userRecords'
+        }">
+        <thead>
+        <tr>
+            <th lay-data="{type:'checkbox', width:50, fixed:'left'}"></th>
+            <th lay-data="{type:'numbers', width:50, fixed:'left'}" th:text="#{web.common.column.number}"></th>
+            <th lay-data="{field:'name', width:100, fixed:'left', sort: true}" th:text="#{web.user.label.name}"></th>
+            <th lay-data="{field:'username', width:130, fixed:'left', sort: true}"
+                th:text="#{web.user.label.username}"></th>
+            <th lay-data="{field:'isEnable', width:80, templet:'#isEnableRender', fixed:'left'}"
+                th:text="#{web.common.column.isEnable}"></th>
+            <th lay-data="{field:'createBy', width:130}" th:text="#{web.common.column.createBy}"></th>
+            <th lay-data="{field:'createTime', width:165, sort: true}" th:text="#{web.common.column.createTime}"></th>
+            <th lay-data="{field:'updateTime', width:165, sort: true}" th:text="#{web.common.column.updateTime}"></th>
+            <th lay-data="{field:'remark', width:260}" th:text="#{web.common.column.remark}"></th>
+            <th lay-data="{width:140, align:'center', fixed:'right', toolbar:'#operateBar'}"
+                th:text="#{web.common.column.operateBar}"></th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript" th:src="@{/common/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/common/utils.js}"></script>
+<script type="text/javascript" th:src="@{/common/common.js}"></script>
+<script>
+    layui.use(['element', 'form', 'table', 'jquery'], function () {
+        var table = layui.table,
+            $ = layui.jquery;
+        var active = {
+            reload: function () {
+                var name = $("#name")
+                    , username = $("#username");
+
+                table.reload('userRecords', {
+                    where: {
+                        name: name.val(),
+                        username: username.val()
+                    }
+                });
+            }
+        };
+
+        $(".search-btn").on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        table.on('tool(userTable)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'detail') {
+                detail("/page/navigation/user/view", data.objId, 460, 390);
+            } else if (layEvent === 'delete') {
+                if (sessionUser().objId !== data.objId) {
+                    deleteOne("/face/user/delete", data.objId);
+                } else {
+                    var deleteSelf = getI18nResource('web.common.message.deleteSelf');
+                    parent.layer.msg(deleteSelf, {icon: 5});
+                }
+            } else if (layEvent === 'edit') {
+                edit("/page/navigation/user/edit", data.objId, 460, 390);
+            }
+        });
+
+        $(document).on('click', '#addButton', function () {
+            add("/page/navigation/user/edit", 460, 390);
+        });
+
+        $(document).on('click', '#deleteButton', function () {
+            var checkedData = table.checkStatus('userRecords').data;
+            if (0 === checkedData.length) {
+                var selectOneMore = getI18nResource('web.common.operate.select.oneMore');
+                parent.layer.msg(selectOneMore, {icon: 5});
+                return;
+            }
+            var ids = [];
+            for (var i = 0; i < checkedData.length; i++) {
+                ids.push(checkedData[i].objId);
+            }
+            deleteBatch("/face/user/deleteBatch", ids);
+        });
+
+        $(document).on('click', '#roleButton', function () {
+            var checkedData = table.checkStatus('userRecords').data;
+            if (1 !== checkedData.length) {
+                var selectOneOnly = getI18nResource('web.common.operate.select.oneOnly');
+                parent.layer.msg(selectOneOnly, {icon: 5});
+                return;
+            }
+            edit("/page/navigation/user/relRole", checkedData[0].objId, 1000, 498);
+        });
+    });
+</script>
+<script type="text/html" id="operateBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" th:title="#{web.common.operate.view}">
+        <i class="far fa-eye"></i>
+    </a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit" th:title="#{web.common.operate.edit}">
+        <i class="far fa-edit"></i>
+    </a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete" th:title="#{web.common.operate.delete}">
+        <i class="far fa-trash-alt"></i>
+    </a>
+</script>
+<script type="text/html" id="isEnableRender">
+    {{#  if(d.isEnable === 1){ }}
+    <span style="color:green;" th:text="#{web.common.column.isEnable.enable}"></span>
+    {{#  } else { }}
+    <span style="color:red;" th:text="#{web.common.column.isEnable.unable}"></span>
+    {{#  } }}
+</script>
+</body>
+</html>

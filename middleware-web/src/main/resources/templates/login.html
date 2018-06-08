@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="https://www.huilianyi.com/favicon.ico" type="image/x-icon">
+    <title th:text="#{web.login.title}"></title>
+
+    <link th:href="@{/plugins/layui/css/layui.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/plugins/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css}" rel="stylesheet"
+          type="text/css">
+</head>
+<body>
+<div class="login">
+    <h1 th:text="#{web.login.head}"></h1>
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <input class="layui-input" name="username" th:placeholder="#{web.login.field.username}"
+                   lay-verify="required" type="text" autocomplete="off" autofocus>
+        </div>
+        <div class="layui-form-item">
+            <input class="layui-input" name="password" th:placeholder="#{web.login.field.password}"
+                   lay-verify="required" type="password" autocomplete="off">
+        </div>
+        <button class="layui-btn login_btn" lay-submit lay-filter="login">
+            <i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;<span th:text="#{web.login.button}"></span>
+        </button>
+    </form>
+</div>
+<script type="text/javascript" th:src="@{/plugins/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/common/common.js}"></script>
+<script>
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , $ = layui.jquery;
+        form.on("submit(login)", function (data) {
+            $.ajax({
+                type: "POST",
+                url: "/face/user/toLogin",
+                contentType: "application/json",
+                data: JSON.stringify(data.field),
+                dataType: "json",
+                success: function (result) {
+                    if (result.success === true) {
+                        layui.data('loginUser', {
+                            key: 'user'
+                            , value: result.object
+                        });
+                        parent.location.href = '/page/navigation/index?userId=' + sessionUser().objId + '&locale=' + getSessionLanguage();
+                    } else {
+                        parent.layer.msg(result.message, {icon: 5});
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
