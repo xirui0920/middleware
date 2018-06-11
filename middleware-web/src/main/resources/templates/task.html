@@ -122,6 +122,8 @@
                 deleteOne("/face/task/delete", data.objId);
             } else if (layEvent === 'edit') {
                 edit("/page/navigation/task/edit", data.objId, 480, 535);
+            } else if (layEvent === 'execute') {
+                execute("/face/task/execute", data.objId);
             }
         });
 
@@ -142,6 +144,35 @@
             }
             deleteBatch('/face/task/deleteBatch', ids);
         });
+
+        /**
+         * 删除一条数据
+         * @param url 请求地址
+         * @param objId  选中的id
+         */
+        function execute(url, objId) {
+            var executeMessage = getI18nResource('web.task.execute.message');
+            var executeWindow = getI18nResource('web.task.execute.window');
+            confirm(executeMessage, executeWindow, function (index) {
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    contentType: "application/json",
+                    data: objId,
+                    async: false,
+                    dataType: "json",
+                    success: function (result) {
+                        if (true === result.success) {
+                            layer.close(index);
+                            $(".search-btn").click();
+                            parent.layer.msg(result.message, {icon: 6});
+                        } else {
+                            parent.layer.msg(result.message, {icon: 5});
+                        }
+                    }
+                });
+            });
+        }
     });
 </script>
 <script type="text/html" id="operateBar">

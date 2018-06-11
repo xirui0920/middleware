@@ -92,8 +92,8 @@ function workDay(dom) {
 }
 
 $(function () {
-    $(".layui-input").on("onChange", function () {
-        $(this).closest("div.layui-input-inline").children().eq(0).click();
+    $(".layui-input-change").change(function () {
+        $(this).closest("div.layui-input-div").children().eq(0).click();
     });
 
     var values = $("input[name^='cron_']");

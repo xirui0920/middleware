@@ -26,7 +26,7 @@
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <div class="layui-input-inline" style="margin-left: 0;margin-bottom: 6px;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;margin-bottom: 6px;">
                 <input type="radio" name="second" value="0" checked onclick="everyTime(this)">
                 <div class="layui-input-inline">
                     <span th:text="#{web.common.cron.head.second}"></span>
@@ -38,37 +38,37 @@
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="second" value="1" onclick="cycle(this)">
                 <span th:text="#{web.common.cron.common.cycle}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="second_from" autocomplete="off" class="layui-input"
-                           style="height: 25px; margin-top: 6px;" value="0" min="0" max="58">
+                    <input type="number" id="second_from" autocomplete="off" class="layui-input-change"
+                           style="height: 25px; margin-top: 6px;" value="1" min="1" max="58">
                 </div>
                 -
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="second_to" autocomplete="off" class="layui-input"
-                           style="height: 25px; margin-top: 6px;" value="1" min="1" max="59">
+                    <input type="number" id="second_to" autocomplete="off" class="layui-input-change"
+                           style="height: 25px; margin-top: 6px;" value="2" min="2" max="59">
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="second" value="2" onclick="beginWith(this)">
                 <span th:text="#{web.common.cron.common.beginWith}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="second_start" autocomplete="off" class="layui-input"
+                    <input type="number" id="second_start" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="0" min="0" max="59">
                 </div>
                 <span th:text="#{web.common.cron.common.everyStart}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="second_every" autocomplete="off" class="layui-input"
+                    <input type="number" id="second_every" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="59">
                 </div>
                 <span th:text="#{web.common.cron.head.second.msg}"></span>
                 <span th:text="#{web.common.cron.common.everyEnd}"></span>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="second" id="second_appoint" value="3">
                 <span th:text="#{web.common.cron.common.appoint}"></span>
                 <br>
@@ -146,7 +146,7 @@
             </div>
         </div>
         <div class="layui-tab-item">
-            <div class="layui-input-inline" style="margin-left: 0;margin-bottom: 6px">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;margin-bottom: 6px">
                 <input type="radio" name="minute" value="0" checked onclick="everyTime(this)">
                 <div class="layui-input-inline">
                     <span th:text="#{web.common.cron.head.minute}"></span>
@@ -158,37 +158,37 @@
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="minute" value="1" onclick="cycle(this)">
                 <span th:text="#{web.common.cron.common.cycle}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="minute_from" autocomplete="off" class="layui-input"
-                           style="height: 25px; margin-top: 6px;" value="0" min="0" max="58">
+                    <input type="number" id="minute_from" autocomplete="off" class="layui-input-change"
+                           style="height: 25px; margin-top: 6px;" value="1" min="1" max="58">
                 </div>
                 -
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="minute_to" autocomplete="off" class="layui-input"
-                           style="height: 25px; margin-top: 6px;" value="1" min="1" max="59">
+                    <input type="number" id="minute_to" autocomplete="off" class="layui-input-change"
+                           style="height: 25px; margin-top: 6px;" value="2" min="2" max="59">
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="minute" value="2" onclick="beginWith(this)">
                 <span th:text="#{web.common.cron.common.beginWith}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="minute_start" autocomplete="off" class="layui-input"
+                    <input type="number" id="minute_start" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="0" min="0" max="59">
                 </div>
                 <span th:text="#{web.common.cron.common.everyStart}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="minute_every" autocomplete="off" class="layui-input"
+                    <input type="number" id="minute_every" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="59">
                 </div>
                 <span th:text="#{web.common.cron.head.minute.msg}"></span>
                 <span th:text="#{web.common.cron.common.everyEnd}"></span>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="minute" id="minute_appoint" value="3">
                 <span th:text="#{web.common.cron.common.appoint}"></span>
                 <br>
@@ -266,7 +266,7 @@
             </div>
         </div>
         <div class="layui-tab-item">
-            <div class="layui-input-inline" style="margin-left: 0;margin-bottom: 6px;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;margin-bottom: 6px;">
                 <input type="radio" name="hour" value="0" checked onclick="everyTime(this)">
                 <div class="layui-input-inline">
                     <span th:text="#{web.common.cron.head.hour}"></span>
@@ -278,30 +278,30 @@
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="hour" value="1" onclick="cycle(this)">
                 <span th:text="#{web.common.cron.common.cycle}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="hour_from" autocomplete="off" class="layui-input"
+                    <input type="number" id="hour_from" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="0" min="0" max="22">
                 </div>
                 -
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="hour_to" autocomplete="off" class="layui-input"
-                           style="height: 25px; margin-top: 6px;" value="1" min="1" max="23">
+                    <input type="number" id="hour_to" autocomplete="off" class="layui-input-change"
+                           style="height: 25px; margin-top: 6px;" value="2" min="2" max="23">
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="hour" value="2" onclick="beginWith(this)">
                 <span th:text="#{web.common.cron.common.beginWith}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="hour_start" autocomplete="off" class="layui-input"
+                    <input type="number" id="hour_start" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="0" min="0" max="23">
                 </div>
                 <span th:text="#{web.common.cron.common.everyStart}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="hour_every" autocomplete="off" class="layui-input"
+                    <input type="number" id="hour_every" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="23">
                 </div>
                 <span th:text="#{web.common.cron.head.hour.msg}"></span>
@@ -343,7 +343,7 @@
             </div>
         </div>
         <div class="layui-tab-item">
-            <div class="layui-input-inline" style="margin-left: 0;margin-bottom: 6px;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;margin-bottom: 6px;">
                 <input type="radio" name="day" value="0" checked onclick="everyTime(this)">
                 <div class="layui-input-inline">
                     <span th:text="#{web.common.cron.head.day}"></span>
@@ -357,52 +357,52 @@
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="day" value="1" onclick="unAppoint(this)">
                 <span th:text="#{web.common.cron.common.unAppoint}"></span>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="day" value="2" onclick="cycle(this)">
                 <span th:text="#{web.common.cron.common.cycle}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="day_from" autocomplete="off" class="layui-input"
+                    <input type="number" id="day_from" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="31">
                 </div>
                 -
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="day_to" autocomplete="off" class="layui-input"
+                    <input type="number" id="day_to" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="2" min="2" max="31">
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="day" value="3" onclick="beginWith(this)">
                 <span th:text="#{web.common.cron.common.beginWith}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="day_start" autocomplete="off" class="layui-input"
+                    <input type="number" id="day_start" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="31">
                 </div>
                 <span th:text="#{web.common.cron.common.everyStart}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="day_every" autocomplete="off" class="layui-input"
+                    <input type="number" id="day_every" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="31">
                 </div>
                 <span th:text="#{web.common.cron.head.day.msg}"></span>
                 <span th:text="#{web.common.cron.common.everyEnd}"></span>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="day" value="4" onclick="workDay(this)">
                 每月
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="day_near" autocomplete="off" class="layui-input"
+                    <input type="number" id="day_near" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="31">
                 </div>
                 号最近的那个工作日
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="day" value="5" onclick="lastDay(this)">
                 <span th:text="#{web.common.cron.head.day.last}"></span>
             </div>
@@ -452,7 +452,7 @@
             </div>
         </div>
         <div class="layui-tab-item">
-            <div class="layui-input-inline" style="margin-left: 0; margin-bottom: 6px;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0; margin-bottom: 6px;">
                 <input type="radio" name="month" value="0" checked onclick="everyTime(this)">
                 <div class="layui-input-inline">
                     <span th:text="#{web.common.cron.head.month}"></span>
@@ -464,35 +464,35 @@
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="month" value="1" onclick="unAppoint(this)">
                 <span th:text="#{web.common.cron.common.unAppoint}"></span>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="month" value="2" onclick="cycle(this)">
                 <span th:text="#{web.common.cron.common.cycle}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="month_from" autocomplete="off" class="layui-input"
+                    <input type="number" id="month_from" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="12">
                 </div>
                 -
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="month_to" autocomplete="off" class="layui-input"
+                    <input type="number" id="month_to" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="2" min="2" max="12">
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="month" value="3" onclick="beginWith(this)">
                 <span th:text="#{web.common.cron.common.beginWith}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="month_start" autocomplete="off" class="layui-input"
+                    <input type="number" id="month_start" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="12">
                 </div>
                 <span th:text="#{web.common.cron.common.everyStart}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="month_every" autocomplete="off" class="layui-input"
+                    <input type="number" id="month_every" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="12">
                 </div>
                 <span th:text="#{web.common.cron.head.month.msg}"></span>
@@ -519,7 +519,7 @@
             </div>
         </div>
         <div class="layui-tab-item">
-            <div class="layui-input-inline" style="margin-left: 0;margin-bottom: 6px;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;margin-bottom: 6px;">
                 <input type="radio" name="week" value="0" checked onclick="everyTime(this)">
                 <div class="layui-input-inline">
                     <span th:text="#{web.common.cron.head.week}"></span>
@@ -533,44 +533,44 @@
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="week" value="1" onclick="unAppoint(this)">
                 <span th:text="#{web.common.cron.common.unAppoint}"></span>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="week" value="2" onclick="cycle(this)">
                 <span th:text="#{web.common.cron.common.cycle}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="week_from" autocomplete="off" class="layui-input"
+                    <input type="number" id="week_from" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="6">
                 </div>
                 -
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="week_to" autocomplete="off" class="layui-input"
+                    <input type="number" id="week_to" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="2" min="2" max="7">
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="week" value="3" onclick="weekOfDay(this)">
                 每月第
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="week_start" autocomplete="off" class="layui-input"
+                    <input type="number" id="week_start" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="4">
                 </div>
                 周的星期
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="week_every" autocomplete="off" class="layui-input"
+                    <input type="number" id="week_every" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="7">
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="week" value="4" onclick="lastWeek(this)">
                 <span th:text="#{web.common.cron.head.week.last}"></span>
                 <div class="layui-input-inline" style="width: 50px; height: 38px;">
-                    <input type="number" id="week_last" autocomplete="off" class="layui-input"
+                    <input type="number" id="week_last" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="1" min="1" max="7">
                 </div>
             </div>
@@ -590,7 +590,7 @@
             </div>
         </div>
         <div class="layui-tab-item">
-            <div class="layui-input-inline" style="margin-left: 0;margin-bottom: 6px;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;margin-bottom: 6px;">
                 <input type="radio" name="year" value="0" checked onclick="unAppoint(this)">
                 <div class="layui-input-inline">
                     <span th:text="#{web.common.cron.head.year}"></span>
@@ -602,21 +602,21 @@
                 </div>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="year" value="1" onclick="everyTime(this)">
                 <span th:text="#{web.common.cron.head.year.every}"></span>
             </div>
             <br>
-            <div class="layui-input-inline" style="margin-left: 0;">
+            <div class="layui-input-inline layui-input-div" style="margin-left: 0;">
                 <input type="radio" name="year" value="2" onclick="cycle(this)">
                 <span th:text="#{web.common.cron.common.cycle}"></span>
                 <div class="layui-input-inline" style="width: 60px; height: 38px;">
-                    <input type="number" id="year_from" autocomplete="off" class="layui-input"
+                    <input type="number" id="year_from" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;" value="2018" min="2018">
                 </div>
                 -
                 <div class="layui-input-inline" style="width: 60px; height: 38px;">
-                    <input type="number" id="year_to" autocomplete="off" class="layui-input"
+                    <input type="number" id="year_to" autocomplete="off" class="layui-input-change"
                            style="height: 25px; margin-top: 6px;">
                 </div>
             </div>

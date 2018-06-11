@@ -2,12 +2,14 @@ package com.huilianyi.middleware.controller;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.huilianyi.middleware.common.CommonResultVo;
 import com.huilianyi.middleware.common.CommonValue;
 import com.huilianyi.middleware.config.LocaleMessageSource;
+import com.huilianyi.middleware.enumeration.EIsEnable;
 import com.huilianyi.middleware.po.SystemTask;
 import com.huilianyi.middleware.service.SystemTaskService;
 import com.huilianyi.middleware.util.CronUtil;
@@ -15,6 +17,7 @@ import com.huilianyi.middleware.util.SpringUtil;
 import com.huilianyi.middleware.vo.ResultListVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,6 +94,23 @@ public class TaskController {
             if (null != taskList && !taskList.isEmpty()) {
                 returnValue.setMessage(localeMessageSource.getMessage("task.add.class.and.method.existed"));
             } else {
+                if (NumberUtil.sub(DateUtil.minute(task.getStartTime()), DateUtil.minute(DateUtil.offsetSecond(new Date(), CommonValue.FIVE))) >= CommonValue.ZERO) {
+                    task.setNextTime(task.getStartTime());
+                } else {
+                    task.setNextTime(CronUtil.getNextTime(task.getStartTime(), task.getCronValue()));
+                }
+
+                try {
+                    Object obj = SpringUtil.getBean(StrUtil.lowerFirst(task.getClassName()));
+                    obj.getClass().getDeclaredMethod(task.getMethodName());
+                } catch (NoSuchBeanDefinitionException e) {
+                    returnValue.setMessage(localeMessageSource.getMessage("task.add.class.not.existed"));
+                    return returnValue;
+                } catch (NoSuchMethodException e) {
+                    returnValue.setMessage(localeMessageSource.getMessage("task.add.method.not.existed"));
+                    return returnValue;
+                }
+
                 Integer result = taskService.add(task);
                 if (CommonValue.ZERO.equals(result)) {
                     returnValue.setMessage(localeMessageSource.getMessage("task.add.failed"));
@@ -190,6 +210,10 @@ public class TaskController {
         if (null == task) {
             returnValue.setMessage(localeMessageSource.getMessage("task.execute.not.existed"));
         } else {
+            if (EIsEnable.UNABLE.getCode().equals(task.getIsEnable())) {
+                returnValue.setMessage(localeMessageSource.getMessage("task.execute.not.enable"));
+                return returnValue;
+            }
             try {
                 logger.info("任务【{}】开始执行，上次执行时间{}，下次执行时间{}...", task.getTaskName(),
                         DateUtil.format(task.getStartTime(), DatePattern.NORM_DATETIME_PATTERN),
