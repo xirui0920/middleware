@@ -192,11 +192,15 @@
     {{#
     var createBy = function(){
     var creator = "";
+    var createOid = d.createBy;
+    if(""===createOid || null == createOid || undefined == createOid){
+    return "";
+    }
     $.ajax({
     type: "post",
     url: "/face/user/selectById",
     contentType: "application/json",
-    data: d.createBy,
+    data: createOid,
     async: false,
     dataType: "json",
     success: function (result) {
@@ -215,11 +219,16 @@
     {{#
     var parent = function(){
     var parentName = "";
+    var parentId = d.parentId;
+    if(""===parentId || null == parentId || undefined == parentId){
+    return "";
+    }
+
     $.ajax({
     type: "post",
     url: "/face/menu/selectById",
     contentType: "application/json",
-    data: d.parentId,
+    data: parentId,
     async: false,
     dataType: "json",
     success: function (result) {
