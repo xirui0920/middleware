@@ -11,6 +11,7 @@ import com.huilianyi.middleware.po.SystemMenu;
 import com.huilianyi.middleware.service.SystemMenuService;
 import com.huilianyi.middleware.vo.MenuTreeVo;
 import com.huilianyi.middleware.vo.ResultListVo;
+import com.huilianyi.middleware.vo.ResultObjectVo;
 import com.huilianyi.middleware.vo.RoleRelMenuVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -102,6 +103,37 @@ public class MenuController {
         returnValue.setSuccess(true);
         returnValue.setCode(CommonValue.SUCCESS_CODE);
         returnValue.setList(menuService.selectEnableMenusByRole(roleId));
+        return returnValue;
+    }
+
+    /**
+     * 获取所有已启用路径菜单
+     *
+     * @return list
+     */
+    @RequestMapping("/selectPathMenus")
+    @ResponseBody
+    public List<SystemMenu> selectPathMenus() {
+        return menuService.selectPathMenus();
+    }
+
+    /**
+     * 获取所有已启用路径菜单
+     *
+     * @return obj
+     */
+    @RequestMapping("/selectById")
+    @ResponseBody
+    public ResultObjectVo<SystemMenu> selectById(@RequestBody String menuId) {
+        ResultObjectVo<SystemMenu> returnValue = new ResultObjectVo<>();
+        returnValue.setSuccess(true);
+        returnValue.setCode(CommonValue.SUCCESS_CODE);
+        SystemMenu menu = new SystemMenu();
+        if (StrUtil.isNotEmpty(menuId)) {
+            menu = null == menuService.selectByObjId(menuId) ? menu : menuService.selectByObjId(menuId);
+            menu.setMenuKey(localeMessageSource.getMessage(menu.getMenuKey()));
+        }
+        returnValue.setObject(menu);
         return returnValue;
     }
 

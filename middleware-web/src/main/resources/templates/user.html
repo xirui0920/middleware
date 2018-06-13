@@ -85,7 +85,8 @@
                 th:text="#{web.user.label.username}"></th>
             <th lay-data="{field:'isEnable', width:80, templet:'#isEnableRender', fixed:'left'}"
                 th:text="#{web.common.column.isEnable}"></th>
-            <th lay-data="{field:'createBy', width:130}" th:text="#{web.common.column.createBy}"></th>
+            <th lay-data="{field:'createBy', width:130, templet:'#createByRender'}"
+                th:text="#{web.common.column.createBy}"></th>
             <th lay-data="{field:'createTime', width:165, sort: true}" th:text="#{web.common.column.createTime}"></th>
             <th lay-data="{field:'updateTime', width:165, sort: true}" th:text="#{web.common.column.updateTime}"></th>
             <th lay-data="{field:'remark', width:260}" th:text="#{web.common.column.remark}"></th>
@@ -186,6 +187,29 @@
     {{#  } else { }}
     <span style="color:red;" th:text="#{web.common.column.isEnable.unable}"></span>
     {{#  } }}
+</script>
+<script type="text/html" id="createByRender">
+    {{#
+    var createBy = function(){
+    var creator = "";
+    $.ajax({
+    type: "post",
+    url: "/face/user/selectById",
+    contentType: "application/json",
+    data: d.createBy,
+    async: false,
+    dataType: "json",
+    success: function (result) {
+    if (true === result.success) {
+    creator = result.object.name;
+    }
+    }
+    });
+    return creator;
+    }
+    }}
+
+    {{ createBy() }}
 </script>
 </body>
 </html>

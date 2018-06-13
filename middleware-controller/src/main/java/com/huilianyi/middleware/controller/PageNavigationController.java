@@ -212,6 +212,7 @@ public class PageNavigationController {
     public String menuView(String objId, Model model) {
         model.addAttribute(CommonValue.PAGE_PROPERTY, CommonValue.PAGE_PROPERTY_VIEW);
         model.addAttribute("menuInfo", menuService.selectByObjId(objId));
+        model.addAttribute("pathMenuList", menuService.selectPathMenus());
         return PageNavigation.MENU_INFO;
     }
 
@@ -229,13 +230,14 @@ public class PageNavigationController {
         }
         model.addAttribute(CommonValue.PAGE_PROPERTY, CommonValue.PAGE_PROPERTY_EDIT);
         model.addAttribute("menuInfo", menu);
+        model.addAttribute("pathMenuList", menuService.selectPathMenus());
         return PageNavigation.MENU_INFO;
     }
 
     /**
      * 任务管理
      *
-     * @return menu
+     * @return task
      */
     @RequestMapping("/task")
     public String task() {
@@ -246,7 +248,7 @@ public class PageNavigationController {
      * 任务信息查看
      *
      * @param objId objId
-     * @return menu
+     * @return task
      */
     @RequestMapping("/task/view")
     public String taskView(String objId, Model model) {
@@ -259,7 +261,7 @@ public class PageNavigationController {
      * 任务信息编辑
      *
      * @param objId objId
-     * @return menu
+     * @return task
      */
     @RequestMapping("/task/edit")
     public String taskEdit(String objId, Model model) {

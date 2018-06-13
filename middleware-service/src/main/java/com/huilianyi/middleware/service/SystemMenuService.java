@@ -106,6 +106,13 @@ public interface SystemMenuService {
     List<MenuTreeVo> selectEnableMenusByRole(String roleId);
 
     /**
+     * 获取所有已启用路径菜单
+     *
+     * @return list
+     */
+    List<SystemMenu> selectPathMenus();
+
+    /**
      * 获取用户关联的已启用菜单
      *
      * @param userId userId

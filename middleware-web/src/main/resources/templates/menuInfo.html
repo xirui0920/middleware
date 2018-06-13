@@ -29,8 +29,12 @@
     <div class="layui-form-item">
         <label class="layui-form-label lable-width" th:text="#{web.menu.label.parentMenu}" style="width: 90px;"></label>
         <div class="layui-input-inline">
-            <input type="text" name="parentId" autocomplete="off" class="layui-input"
-                   th:placeholder="#{web.menu.label.parentMenu}" th:value="${menuInfo.parentId}">
+            <select name="parentId">
+                <option value="" th:text="#{web.common.column.select}"></option>
+                <option th:each="pathMenu:${pathMenuList}" th:value="${pathMenu.objId}"
+                        th:selected="${pathMenu.objId==menuInfo.parentId}"
+                        th:text="#{${pathMenu.menuKey}}"></option>
+            </select>
         </div>
     </div>
     <div class="layui-form-item">

@@ -81,7 +81,8 @@
             <th lay-data="{type:'numbers', width:50, fixed:'left'}" th:text="#{web.common.column.number}"></th>
             <th lay-data="{field:'menuKey', width:210, fixed:'left', sort: true}"
                 th:text="#{web.menu.label.menuKey}"></th>
-            <th lay-data="{field:'parentId', width:130, fixed:'left'}" th:text="#{web.menu.label.parentMenu}"></th>
+            <th lay-data="{field:'parentId', width:130, templet:'#parentRender', fixed:'left'}"
+                th:text="#{web.menu.label.parentMenu}"></th>
             <th lay-data="{field:'menuUri', width:130, fixed:'left'}" th:text="#{web.menu.label.menuUri}"></th>
             <th lay-data="{field:'menuType', width:130, templet:'#menuTypeRender'}"
                 th:text="#{web.menu.label.menuType}"></th>
@@ -90,7 +91,8 @@
             <th lay-data="{field:'sort', width:80}" th:text="#{web.menu.label.sort}"></th>
             <th lay-data="{field:'isEnable', width:80, templet:'#isEnableRender'}"
                 th:text="#{web.common.column.isEnable}"></th>
-            <th lay-data="{field:'createBy', width:130}" th:text="#{web.common.column.createBy}"></th>
+            <th lay-data="{field:'createBy', width:130, templet:'#createByRender'}"
+                th:text="#{web.common.column.createBy}"></th>
             <th lay-data="{field:'createTime', width:165, sort: true}" th:text="#{web.common.column.createTime}"></th>
             <th lay-data="{field:'updateTime', width:165, sort: true}" th:text="#{web.common.column.updateTime}"></th>
             <th lay-data="{field:'remark', width:260}" th:text="#{web.common.column.remark}"></th>
@@ -185,6 +187,52 @@
     {{#  } else { }}
     <span style="color:red;" th:text="#{web.common.column.isEnable.unable}"></span>
     {{#  } }}
+</script>
+<script type="text/html" id="createByRender">
+    {{#
+    var createBy = function(){
+    var creator = "";
+    $.ajax({
+    type: "post",
+    url: "/face/user/selectById",
+    contentType: "application/json",
+    data: d.createBy,
+    async: false,
+    dataType: "json",
+    success: function (result) {
+    if (true === result.success) {
+    creator = result.object.name;
+    }
+    }
+    });
+    return creator;
+    }
+    }}
+
+    {{ createBy() }}
+</script>
+<script type="text/html" id="parentRender">
+    {{#
+    var parent = function(){
+    var parentName = "";
+    $.ajax({
+    type: "post",
+    url: "/face/menu/selectById",
+    contentType: "application/json",
+    data: d.parentId,
+    async: false,
+    dataType: "json",
+    success: function (result) {
+    if (true === result.success) {
+    parentName = result.object.menuKey;
+    }
+    }
+    });
+    return parentName;
+    }
+    }}
+
+    {{ parent() }}
 </script>
 </body>
 </html>

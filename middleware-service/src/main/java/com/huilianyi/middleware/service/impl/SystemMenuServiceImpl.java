@@ -7,6 +7,7 @@ import com.huilianyi.middleware.common.CommonValue;
 import com.huilianyi.middleware.config.LocaleMessageSource;
 import com.huilianyi.middleware.dao.SystemMenuMapper;
 import com.huilianyi.middleware.dao.SystemRoleMenuMapper;
+import com.huilianyi.middleware.enumeration.EIsEnable;
 import com.huilianyi.middleware.enumeration.EMenuType;
 import com.huilianyi.middleware.po.SystemMenu;
 import com.huilianyi.middleware.po.SystemRoleMenu;
@@ -217,6 +218,20 @@ public class SystemMenuServiceImpl implements SystemMenuService {
             }
         }
         return result;
+    }
+
+    /**
+     * 获取所有已启用路径菜单
+     *
+     * @return list
+     */
+    @Override
+    public List<SystemMenu> selectPathMenus() {
+        EntityWrapper<SystemMenu> wrapper = new EntityWrapper<>();
+        wrapper.where(CommonValue.SQL_WHERE).eq("MENU_TYPE", EMenuType.PATH.getCode())
+                .eq("IS_ENABLE", EIsEnable.ENABLE.getCode());
+        wrapper.orderBy("SORT", true);
+        return menuMapper.selectList(wrapper);
     }
 
     /**

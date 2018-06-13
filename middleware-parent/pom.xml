@@ -27,6 +27,9 @@
         <module>../middleware-resources-application-stage</module>
         <module>../middleware-resources-application-prod</module>
         <module>../middleware-config</module>
+        <module>../middleware-base-data</module>
+        <module>../middleware-business-data</module>
+        <module>../middleware-callback</module>
     </modules>
     <description>根项目模块</description>
 
@@ -50,6 +53,7 @@
         <commons-lang.version>2.6</commons-lang.version>
         <liquibase.version>3.6.1</liquibase.version>
         <mysql-connector.version>8.0.11</mysql-connector.version>
+        <middleware-core.version>1.2.1-SNAPSHOT</middleware-core.version>
     </properties>
 
     <dependencies>
@@ -156,6 +160,13 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector.version}</version>
         </dependency>
+
+        <!-- 汇联易SDK -->
+        <!--<dependency>
+            <groupId>com.helioscloud.atlantis</groupId>
+            <artifactId>middleware-core</artifactId>
+            <version>${middleware-core.version}</version>
+        </dependency>-->
     </dependencies>
 
 </project>

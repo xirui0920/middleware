@@ -260,4 +260,24 @@ public class UserController {
         }
         return returnValue;
     }
+
+    /**
+     * 获取用户信息
+     *
+     * @param userId userId
+     * @return obj
+     */
+    @RequestMapping("/selectById")
+    @ResponseBody
+    public ResultObjectVo<SystemUser> selectById(@RequestBody String userId) {
+        ResultObjectVo<SystemUser> returnValue = new ResultObjectVo<>();
+        returnValue.setCode(CommonValue.SUCCESS_CODE);
+        returnValue.setSuccess(true);
+        SystemUser user = new SystemUser();
+        if (StrUtil.isNotEmpty(userId)) {
+            user = null == userService.selectByObjId(userId) ? user : userService.selectByObjId(userId);
+        }
+        returnValue.setObject(user);
+        return returnValue;
+    }
 }
