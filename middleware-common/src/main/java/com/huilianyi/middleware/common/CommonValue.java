@@ -17,7 +17,9 @@ public interface CommonValue {
     Integer ONE = 1;
     Integer TWO = 2;
     Integer FIVE = 5;
+    Integer EIGHT = 8;
     Integer TEN = 10;
+    Integer TWENTY = 20;
     String PAGE_PROPERTY = "pageProperty";
     String PAGE_PROPERTY_VIEW = "view";
     String PAGE_PROPERTY_EDIT = "edit";
@@ -45,4 +47,25 @@ public interface CommonValue {
     String TASK_SEARCH_COLUMN_TASK_NAME = "taskName";
     String TASK_DB_COLUMN_TASK_NAME = "TASK_NAME";
     String TASK_DEFAULT_ORDER_COLUMN = "NEXT_TIME";
+
+    /**
+     * 时区时间T标志
+     */
+    String TIME_ZONE_DATE_TIME_FLAG_T = "T";
+    /**
+     * 时区时间Z标志
+     */
+    String TIME_ZONE_DATE_TIME_FLAG_Z = "Z";
+    /**
+     * 时间格式
+     */
+    String TIME_ZONE_DATE_PATTERN_WITH_T = "yyyy-MM-dd'T'HH:mm:ss";
+    /**
+     * 时间格式
+     */
+    String TIME_ZONE_DATE_PATTERN_WITH_T_Z = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    /**
+     * 时间格式
+     */
+    String TIME_ZONE_DATE_PATTERN_WITH_MS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 }
